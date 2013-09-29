@@ -1,0 +1,60 @@
+<automaton>
+<alphaset>
+     <char>0</char>
+     <char>1</char>
+</alphaset>
+<stateset>
+     <state>q0</state>
+     <state>q1</state>
+     <state>q2</state>
+     <state>q3</state>
+</stateset>
+<transset>
+     <trans>
+          <state>q0</state>
+          <char>1</char>
+          <state>q1</state>
+     </trans>
+     <trans>
+          <state>q0</state>
+          <char>0</char>
+          <state>q2</state>
+     </trans>
+     <trans>
+          <state>q2</state>
+          <char>1</char>
+          <state>q3</state>
+     </trans>
+     <trans>
+          <state>q2</state>
+          <char>0</char>
+          <state>q0
+          </state>
+     </trans>
+     <trans>
+          <state>q1</state>
+          <char>1</char>
+          <state>q0</state>
+     </trans>
+     <trans>
+          <state>q1</state>
+          <char>0</char>
+          <state>q3</state>
+     </trans>
+     <trans>
+          <state>q3</state>
+          <char>1</char>
+          <state>q2</state>
+     </trans>
+     <trans>
+          <state>q3</state>
+          <char>0</char>
+          <state>q1</state>
+     </trans>
+</transset>
+<startstate>q0</startstate>
+<acceptstates>
+     <state>q0</state>
+     <state>q3</state>
+</acceptstates>
+</automaton>
