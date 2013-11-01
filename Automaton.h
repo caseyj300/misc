@@ -2,18 +2,12 @@
 #define __AUTOMATON_H__
 
 #include "State.h"
-//#include "Transition.h"
+#include "Transition.h"
 #include "Symbol.h"
 #include <string>
 #include <cstdio>
 #include <cstdlib>
 
-using namespace std;
-
-typedef struct node {
-	State state;
-	struct node* next;
-} Node;
 
 class Automaton {
 public:
@@ -29,10 +23,13 @@ public:
 	void makeAccept(string name);
 	void makeStart(string name);
 
-	void addTransition(string name, char c);
-	void removeTransition(string name, char c);
+	void printStateSet( );
+
+	void addTransition(string startName, string endName, char c);
+	void removeTransition(string startName, char c);
 
 	void getInput();
+
 	/*
 	bool evalInput(string);
 	bool checkAutomaton();
@@ -45,14 +42,13 @@ public:
 	State* startState;
 	State* currentState;
 	string input;
-	//Node* stateSet;
 	State* stateSet;
 	Symbol alphabetSet;
 
 private:
-	// create node function with passed name
-	Node makeNode(string name);
+	/* Operations */
 	bool matchState(string name);
+	bool matchTrans(string name, char c);
 
 	
 };
