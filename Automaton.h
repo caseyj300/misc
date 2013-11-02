@@ -1,6 +1,7 @@
 #ifndef __AUTOMATON_H__
 #define __AUTOMATON_H__
 
+#include "XMLparser.h"
 #include "State.h"
 #include "Transition.h"
 #include "Symbol.h"
@@ -37,12 +38,13 @@ public:
 	void printTransitionSet( );
 
 	void getInput();
+	
+	void loadAutomaton(char* filename);
 
 	/*
 	bool evalInput(string);
 	bool checkAutomaton();
 	void saveAutomaton();
-	void loadAutomaton(FILE*);
 	void deleteAutomaton();
 	*/
 

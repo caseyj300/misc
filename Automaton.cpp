@@ -417,3 +417,15 @@ void Automaton::getInput( ) {
 	cin >> input;
 	return;
 }
+
+
+// Builds an automaton from an xml text file
+void Automaton::loadAutomaton( char* filename ) {
+	Automaton* tempA = this;
+	if( XMLparser(filename, tempA) )
+		cout << "Automaton successfully built from " << filename << endl;
+	else
+		cout << "Automaton could not be built from " << filename << endl;
+
+	return;
+}
