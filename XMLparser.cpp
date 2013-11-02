@@ -14,6 +14,7 @@ bool XMLparser( char* filename, Automaton* jiffy ) {
 		transSetParse, sStateParse, accStateParse};
 
 	fda = jiffy;
+	cout << "Attempting to open file : " << filename << endl;
 
 	infile.open(filename);
 	if( !infile.is_open() ) {

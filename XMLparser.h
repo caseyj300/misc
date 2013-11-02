@@ -7,6 +7,8 @@
 #include <string>
 using namespace std;
 
+class Automaton; // forward declaration
+
 bool XMLparser( char* filename, Automaton* jiffy );
 int tagCheck( char* c );
 bool automParse( );
