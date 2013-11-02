@@ -8,6 +8,176 @@ Automaton::Automaton( ) {
 	stateSet = NULL;
 }
 
+// Menu interface
+void Automaton::menu()
+{
+	string input;
+	string x;
+	string s;
+	string e;
+	char t;
+	char* n = "";
+	string accept;
+	
+	// Print menu first time
+	cout << "\n**Welcome to Automaton**"<<endl;
+	cout << "1. Add State" <<endl;
+	cout << "2. Add Transition" <<endl;
+	cout << "3. Make Acceptance state" <<endl;
+	cout << "4. Make Starting State" << endl;
+	cout << "5. Add Symbol to Alpha Set" <<endl;
+	cout << "6. Remove Symbol from Alpha Set" <<endl;
+	cout << "7. Remove State" <<endl;
+	cout << "8. Remove Transition" <<endl;
+	cout << "9. Load Automaton from XML file" <<endl;
+	cout << "10. Save Automaton"<<endl;
+	cout << "11. Print State Set"<<endl;
+	cout << "12. Print Alphabet Set" <<endl;
+	cout << "13. Print Transition Set" <<endl;
+	cout << "14. Print this menu again" << endl;
+	cout << "0. Exit" << endl;
+
+	do
+	{
+	input = "";	
+	cout << "\nWhat would you like to do? ";
+	cin >> input;
+
+	switch(atoi(input.c_str()))
+	{
+	case 1:
+		{
+			cout << "Enter the name of new state: ";
+			cin >> s;
+			addState(s);
+			break;
+		}
+	case 2:
+		{
+			cout << "Enter the start state for transition: ";
+			cin >> s;
+			cout << "Enter the end state for transition: ";
+			cin >> e;
+			cout << "Enter the trigger character: ";
+			cin >> t;
+			addTransition(s,e,t);
+			break;
+		}
+	case 3:
+		{
+			cout << "Which state do you want to look at?: ";
+			cin >> x;
+			cout << "Is it accepting?(true/false): ";
+			cin >> accept;
+			if (accept == "true")
+				setAcceptance(x, true);
+			else
+				setAcceptance(x, false);
+			break;
+		}
+	case 4:
+		{
+			cout << "Which state do you want to make the starting state?: ";
+			cin >> x;
+			makeStart(x);
+			break;
+		}
+	case 5:
+		{
+			cout << "What character do you wish to add to Alpha set?: ";
+			cin >> s;
+			addSymbol(s[0]);
+			break;
+		}
+	case 6:
+		{
+			cout << "What character do you want to remove?: ";
+			cin >> s;
+			removeSymbol(s[0]);
+			break;
+		}
+	case 7:
+		{
+			cout << "Which state do you want to remove?: ";
+			cin >> x;
+			removeState(x);
+			break;
+		}
+	case 8:
+		{
+			cout << "Which state do you want to remove a transition?: ";
+			cin >> x;
+			cout << "Which trigger character is used for the transition?: ";
+			cin >> s;
+			removeTransition(x, s[0]);
+			break;
+
+		}
+	case 9:
+		{
+			/*cout << "Enter the name of XML file: ";
+			cin >> x;
+			cout << "Trying to load from " << x << endl;
+			strcat(n, x.c_str() );
+			cout << "Begin attempt. " << endl;
+			loadAutomaton(n);*/
+			cout << "Not currently implemented" << endl;
+			break;
+		}
+	case 10:
+		{
+			cout << "Saving...IS NOT CURRENTLY IMPLEMENTED"<<endl;
+			break;
+		}
+	case 11:
+		{
+			printStateSet();
+			break;
+		}
+	case 12:
+		{
+			printAlphabet();
+			break;
+			
+		}
+	case 13:
+		{
+			printTransitionSet();
+			break;
+
+		}
+	case 14:
+		{
+		cout << "\n**Welcome to Automaton**"<<endl;
+		cout << "1. Add State" <<endl;
+		cout << "2. Add Transition" <<endl;
+		cout << "3. Make Acceptance state" <<endl;
+		cout << "4. Make Starting State" << endl;
+		cout << "5. Add Symbol to Alpha Set" <<endl;
+		cout << "6. Remove Symbol from Alpha Set" <<endl;
+		cout << "7. Remove State" <<endl;
+		cout << "8. Remove Transition" <<endl;
+		cout << "9. Load Automaton from XML file" <<endl;
+		cout << "10. Save Automaton"<<endl;
+		cout << "11. Print State Set"<<endl;
+		cout << "12. Print Alphabet Set" <<endl;
+		cout << "13. Print Transition Set" <<endl;
+		cout << "14. Print this menu again" << endl;
+		cout << "0. Exit" << endl;
+		break;
+		}
+	default:
+		cout << "blargha" << endl;
+	}
+	
+	x = "";
+	s = "";
+	e = "";
+	t = '\0';
+	accept = "";
+	cout<<endl;
+	}while ( atoi(input.c_str()) != 0);
+}
 
 // Calls the Symbol class's addSymbol function
 // To add the char c to the alphabet set string.
@@ -177,6 +347,12 @@ void Automaton::makeStart(string name) {
 	// Empty stateSet
 	if( stateSet == NULL ) {
 		cout << "The state set is empty." << endl;
+		return;
+	}
+
+	// Check first state
+	if( temp->name.compare(name) == 0 ) {
+		startState = temp;
 		return;
 	}
 

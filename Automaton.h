@@ -9,12 +9,16 @@
 #include <cstdio>
 #include <cstdlib>
 
+using namespace std;
+
 
 class Automaton {
 public:
 	/* Operations */
 	Automaton(); // Constructor
 	//void ~Automaton(); // Deconstructor
+
+	void menu();
 
 	void addSymbol(char c);
 	void removeSymbol(char c);
