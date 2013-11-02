@@ -20,9 +20,10 @@ void Symbol::removeSymbol(char c) {
 	// Otherwise, print a message.
 	if( Alphabet.find( string(1, c) ) != string::npos ) {
 		Alphabet.erase( Alphabet.begin()+(Alphabet.find( string(1,c) )) );
-		cout << Alphabet << endl;
 	}
-	else
+	else {
 		cout << "Character " << c << " was not found in the Alphabet." << endl;
+	}
 
+	return;
 }

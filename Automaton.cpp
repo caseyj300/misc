@@ -23,6 +23,25 @@ void Automaton::removeSymbol(char c) {
 }
 
 
+// Prints out the individual characters that are in the alphabetSet
+void Automaton::printAlphabet( ) {
+	int count = 0;
+	int length = alphabetSet.Alphabet.length();
+
+	cout << "The alphabet set currently holds:\n"
+		 << "----------------------------------------";
+	while( count < length ) {
+		if( count % 8 == 0 )
+			cout << endl;
+		cout << "'" << alphabetSet.Alphabet[count] << "'  ";
+		count++;
+	}
+	cout << "\n----------------------------------------\n" << endl;
+
+	return;
+}
+
+
 // Creates and adds a state with the name of passed string to the stateSet list.
 // - If the stateSet is empty, just creates the state and points to it from stateSet
 // - If the stateSet is not empty, check that a state with matching name
@@ -34,9 +53,9 @@ void Automaton::addState(string name) {
 
 	// Empty stateSet
 	if( stateSet == NULL ) {
-		cout << "stateSet is empty." << endl;
+		//cout << "stateSet is empty." << endl;
 		stateSet = new State(name);
-		cout << "just added " << stateSet->name << endl;
+		//cout << "just added " << stateSet->name << endl;
 		return;
 	}
 
@@ -51,7 +70,7 @@ void Automaton::addState(string name) {
 		// Add state to stateSet
 		temp = stateSet;
 		while( temp->next != NULL ) {
-			cout << "temp = temp->next" << endl;
+			//cout << "temp = temp->next" << endl;
 			temp = temp->next;
 		}
 		temp->next = new State(name);
@@ -116,9 +135,9 @@ void Automaton::removeState(string name) {
 
 
 // Searches the stateSet for a state whose name matches the passed string argument.
-// - If a match is found, its accept attribute is set to true.
+// - If a match is found, its sets its accept attribute to the passed boolean value x.
 // - If no match is found, an appropriate message is printed and the function ended.
-void Automaton::makeAccept(string name) {
+void Automaton::setAcceptance(string name, bool x) {
 	State* temp = stateSet;
 
 	// Empty stateSet
@@ -129,7 +148,7 @@ void Automaton::makeAccept(string name) {
 
 	while( temp != NULL ) {
 		if( temp->name.compare(name) == 0 ) {
-			temp->accept = true;
+			temp->accept = x;
 			return;
 		}
 		temp = temp->next;
@@ -166,14 +185,19 @@ void Automaton::makeStart(string name) {
 	return;
 }
 
+
+// Goes through the stateSet printing out each state's
+// name and whether it is accepting or not.
 void Automaton::printStateSet( ) {
 	State* temp = stateSet;
-	int count = 0;
 
+	cout << "The state set currently holds:\n"
+		 << "----------------------------------------" << endl;
 	while( temp != NULL ) {
-		cout << "State " << count << ": Name : " << temp->name << " | Accept : " << temp->accept << endl;
+		cout << "Name : " << temp->name << " | Accept : " << temp->accept << endl;
 		temp = temp->next;
 	}
+	cout << "----------------------------------------\n" << endl;
 
 	return;
 }
@@ -207,8 +231,8 @@ void Automaton::addTransition(string startName, string endName, char c) {
 					}
 					else {
 						temp1->addTransition(temp2, c);
-						cout << "Transition on " << c << " made between states " << startName
-							 << " and " << endName << " made." << endl;
+						//cout << "Transition on " << c << " made between states " << startName
+						//     << " and " << endName << " made." << endl;
 						return;
 					}
 				}
@@ -306,6 +330,37 @@ void Automaton::removeTransition(string name, char c) {
 		tempS = tempS->next;
 	}
 	cout << "State " << name << " does not exist in the stateSet." << endl;
+
+	return;
+}
+
+
+// Prints the transitions of the automaton
+// Goes through the stateSet and prints the transitions of each state.
+void Automaton::printTransitionSet( ) {
+	State* tempS = stateSet;
+	Transition* tempT;
+
+	cout << "The transitions set currently holds:\n"
+		 << "----------------------------------------" << endl;
+
+	// Empty stateSet
+	if( stateSet == NULL ) {
+		return;
+	}
+
+	// Non-empty stateSet
+	while( tempS != NULL ) {
+		tempT = tempS->trans;
+		while( tempT != NULL ) {
+			cout << "Start: " << tempT->startState->name
+				 << "  End: " << tempT->endState->name
+				 << "  Trigger: '" << tempT->trigger << "'" << endl;
+			tempT = tempT->next;
+		}
+		tempS = tempS->next;
+	}
+	cout << "----------------------------------------\n" << endl;
 
 	return;
 }

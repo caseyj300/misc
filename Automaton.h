@@ -18,15 +18,19 @@ public:
 	void addSymbol(char c);
 	void removeSymbol(char c);
 
+	void printAlphabet( );
+
 	void addState(string name);
 	void removeState(string name);
-	void makeAccept(string name);
+	void setAcceptance(string name, bool x);
 	void makeStart(string name);
 
 	void printStateSet( );
 
 	void addTransition(string startName, string endName, char c);
 	void removeTransition(string startName, char c);
+
+	void printTransitionSet( );
 
 	void getInput();
 
