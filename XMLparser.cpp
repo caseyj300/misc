@@ -5,12 +5,15 @@ ifstream infile;
 string line;
 char* cline;
 char* token;
+Automaton* fda;
 
-bool XMLparser( char* filename ) {
+bool XMLparser( char* filename, Automaton* jiffy ) {
 	int desTag = 1; // represents the desired tag
 	int tcheck; // represents the encountered tag
 	bool (*fptr[6])() = {automParse, alphSetParse, stateSetParse,
 		transSetParse, sStateParse, accStateParse};
+
+	fda = jiffy;
 
 	infile.open(filename);
 	if( !infile.is_open() ) {
@@ -82,6 +85,7 @@ bool XMLparser( char* filename ) {
 	return true;
 }
 
+
 // Checks if c matches an expected tag :
 // automaton, alphaset, stateset, transet, startstate, acceptstates
 // char, state, trans
@@ -109,10 +113,13 @@ int tagCheck( char* c ) {
 	else return 0;
 }
 
+
 bool automParse( ) {
 	//cout << "pointless function call" << endl;
+	// called to handle the encounter of the <automaton> tag
 	return true;
 }
+
 
 bool alphSetParse( ) {
 	int desTag = 7; // desired tag is <char>
@@ -148,11 +155,13 @@ bool alphSetParse( ) {
 			if( strlen(token) == 1 ) {
 				step = 3; desTag = -7;
 				cout << "Add to alphabet set: " << token << endl;
+				fda->addSymbol( *token );
 			}
 			else if( strlen(token) == 7 ) {
 				if( strcmp( "</char", token + 1 ) == 0 ) {
 					step = 1; desTag = 7;
 					cout << "Add to alphabet set: " << token[0] << endl;
+					fda->addSymbol( token[0] );
 				}
 			}
 			else {
@@ -200,11 +209,13 @@ bool alphSetParse( ) {
 					if( strlen(token) == 1 ) {
 						step = 3; desTag = -7;
 						cout << "Add to alphabet set: " << token << endl;
+						fda->addSymbol( *token );
 					}
 					else if( strlen(token) == 7 ) {
 						if( strcmp( "</char", token + 1 ) == 0 ) {
 							step = 1; desTag = 7;
 							cout << "Add to alphabet set: " << token[0] << endl;
+							fda->addSymbol( token[0] );
 						}
 					}
 					else {
@@ -223,6 +234,7 @@ bool alphSetParse( ) {
 
 	return false;
 }
+
 
 bool stateSetParse( ) {
 	int desTag = 8; // desired tag is <state>
@@ -268,11 +280,13 @@ bool stateSetParse( ) {
 				}
 				name[count] = NULL;
 				cout << "Add to state set: " << name << endl;
+				fda->addState(name);
 				count = 0;
 			}
 			else {
 				step = 3; desTag = -8;
 				cout << "Add to state set: " << token << endl;
+				fda->addState(token);
 			}
 		}
 		else if( (desTag == tagCheck(token) && desTag == -8) || ( strcmp(token, "/state") == 0 && step == 4 ) ) {
@@ -323,11 +337,13 @@ bool stateSetParse( ) {
 						}
 						name[count] = NULL;
 						cout << "Add to state set: " << name << endl;
+						fda->addState(name);
 						count = 0;
 					}
 					else {
 						step = 3; desTag = -8;
 						cout << "Add to state set: " << token << endl;
+						fda->addState(token);
 					}
 				}
 				else if( (desTag == tagCheck(token) && desTag == -8) || ( strcmp(token, "/state") == 0 && step == 4 ) ) {
@@ -341,6 +357,7 @@ bool stateSetParse( ) {
 
 	return false;
 }
+
 
 bool transSetParse( ) {
 	int desTag = 9; // desired tag is <trans>
@@ -463,6 +480,7 @@ bool transSetParse( ) {
 				break;
 			case -9: // Found the </trans> tag
 				cout << "Add to transition set: " << symbol << " shifts " << name1 << " to " << name2 << endl;
+				fda->addTransition(name1, name2, symbol);
 				step = 1; desTag = 9;
 				break;
 		}
@@ -586,6 +604,7 @@ bool transSetParse( ) {
 						break;
 					case -9: // Found the </trans> tag
 						cout << "Add to transition set: " << symbol << " shifts " << name1 << " to " << name2 << endl;
+						fda->addTransition(name1, name2, symbol);
 						step = 1; desTag = 9;
 						break;
 				}
@@ -630,12 +649,14 @@ bool sStateParse( ) {
 					}
 					name[count] = NULL;
 					cout << "Designate starting state: " << name << endl;
+					fda->makeStart(name);
 					count = 0;
 					return true;
 				}
 				else {
 					step = 2; desTag = -5;
 					cout << "Designate starting state: " << token << endl;
+					fda->makeStart(token);
 				}
 				break;
 			case -5: // Found </startstate> tag
@@ -677,12 +698,14 @@ bool sStateParse( ) {
 						}
 						name[count] = NULL;
 						cout << "Designate starting state: " << name << endl;
+						fda->makeStart(name);
 						count = 0;
 						return true;
 					}
 					else {
 						step = 2; desTag = -4;
 						cout << "Designate starting state: " << token << endl;
+						fda->makeStart(token);
 					}
 					break;
 				case -4: // Found </startstate> tag
@@ -742,11 +765,13 @@ bool accStateParse( ) {
 					}
 					name[count] = '\0';
 					cout << "Designate an accepting state: " << name << endl;
+					fda->setAcceptance(name, true);
 					count = 0;
 				}
 				else {
 					step = 3; desTag = -8;
 					cout << "Designate an accepting state: " << token << endl;
+					fda->setAcceptance(token, true);
 				}
 				break;
 			case -8: // Found </state> tag.
@@ -795,11 +820,13 @@ bool accStateParse( ) {
 							}
 							name[count] = '\0';
 							cout << "Designate an accepting state: " << name << endl;
+							fda->setAcceptance(name, true);
 							count = 0;
 						}
 						else {
 							step = 3; desTag = -8;
 							cout << "Designate an accepting state: " << token << endl;
+							fda->setAcceptance(token, true);
 						}
 						break;
 					case -8: // Found </state> tag.
