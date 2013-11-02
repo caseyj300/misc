@@ -14,6 +14,13 @@ State::State(string s) {
 	trans = NULL;
 }
 
+State::State(char* c) {
+	name.assign(c);
+	accept = false;
+	next = NULL;
+	trans = NULL;
+}
+
 
 // State function call to add a transition to its list of transitions.
 void State::addTransition(State* dest, char c) {

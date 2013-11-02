@@ -23,11 +23,15 @@ public:
 	void addState(string name);
 	void removeState(string name);
 	void setAcceptance(string name, bool x);
+	void setAcceptance(char* name, bool x);
 	void makeStart(string name);
+	void makeStart(char* name);
 
 	void printStateSet( );
+	void printStart( );
 
 	void addTransition(string startName, string endName, char c);
+	void addTransition(char* startName, char* endName, char c);
 	void removeTransition(string startName, char c);
 
 	void printTransitionSet( );

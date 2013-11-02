@@ -12,6 +12,7 @@ class State {
 public:
 	State();
 	State(string s); // Constructor
+	State(char* c);
 
 	void addTransition(State* dest, char c);
 

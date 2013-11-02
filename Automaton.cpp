@@ -159,6 +159,14 @@ void Automaton::setAcceptance(string name, bool x) {
 }
 
 
+// For the XML parser which handles char*
+void Automaton::setAcceptance(char* name, bool x) {
+	string s(name);
+	setAcceptance(s, x);
+	return;
+}
+
+
 // Searches the stateSet for a state whose name matches the passed string argument.
 // - If a match is found, the state is set to be the startState.
 //   The stateSet is updated accordingly.
@@ -182,6 +190,28 @@ void Automaton::makeStart(string name) {
 	}
 
 	cout << "The state " << name << " could not be found in the state set." << endl;
+	return;
+}
+
+
+// For the XML parser which handles char*
+void Automaton::makeStart(char* name) {
+	string s(name);
+	makeStart(s);
+	return;
+}
+
+
+// Prints the start state of the Automaton
+void Automaton::printStart( ) {
+	State* temp = startState;
+
+	if( temp == NULL ) {
+		cout << "There is no designated starting state." << endl;
+		return;
+	}
+
+	cout << "Name: " << temp->name << "  Accept: " << temp->accept << endl;
 	return;
 }
 
@@ -217,6 +247,12 @@ void Automaton::addTransition(string startName, string endName, char c) {
 		return;
 	}
 
+	// Check trigger validity
+	if( alphabetSet.Alphabet.find( string(1, c) ) == string::npos ) {
+		cout << "The trigger character " << c << " is not in the alphabet set." << endl;
+		return;
+	}
+
 	// Search for starting state
 	while( temp1 != NULL ) {
 		if( temp1->name.compare(startName) == 0 ) {
@@ -246,6 +282,15 @@ void Automaton::addTransition(string startName, string endName, char c) {
 
 	cout << "No state matching the starting name " << startName << " could be found in the stateSet." << endl;
 
+	return;
+}
+
+
+// For the XML parser, which handles char*
+void Automaton::addTransition(char* startName, char* endName, char c ) {
+	string start(startName);
+	string end(endName);
+	addTransition(start, end, c);
 	return;
 }
 
