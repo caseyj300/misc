@@ -605,3 +605,99 @@ void Automaton::loadAutomaton( char* filename ) {
 
 	return;
 }
+
+// function saves automaton to XML file if one exists
+void Automaton::saveAutomaton( ) {
+	ofstream file;
+	file.open ("output.txt");
+	file << "<automaton>\n";
+	if (alphabetSet.Alphabet.length() > 0)
+	{
+		file << "<alphaset>\n"; 
+		for(int i =0; i < alphabetSet.Alphabet.length(); i++)
+		{
+			file << "\t<char>" << alphabetSet.Alphabet[i] << "</char>\n";
+		}
+		file << "</alphaset>\n";
+		
+	}
+	else
+	{
+		file << "<alphaset>\n";
+		file << "</alphaset>\n";
+	}
+	State *temp = stateSet;
+	if (temp != NULL)
+	{
+		file << "<stateset>\n";
+		while (temp != NULL)
+			{
+				file << "\t<state>" << temp->name << "</state>\n";
+				temp = temp->next;
+			}
+		file << "</stateset>\n";
+	}
+	else
+	{
+		file << "<stateset>\n";
+		file << "</stateset>\n";
+	}
+	State* tempS = stateSet;
+	Transition* tempT;
+	if ( stateSet != NULL)
+	{
+		file << "<transset>\n";
+		while( tempS != NULL)
+		{
+			tempT = tempS->trans;
+			
+			while( tempT != NULL ) {
+				file << "\t<trans>\n";
+				file << "\t\t<state>" << tempT->startState->name << "</state>\n";
+				file << "\t\t<char>" << tempT->trigger << "</char>\n";
+				file << "\t\t<state>" << tempT->endState->name << "</state>\n";
+				tempT = tempT->next;
+				file << "\t</trans>\n";
+			}
+			
+			tempS = tempS->next;
+		}
+		file << "</transset>\n";
+			
+	}
+	else
+	{
+		file << "<transset>\n";
+		file << "</transset>\n";
+	}
+	State* temp2 = startState;
+	if (temp2 != NULL)
+	{
+		file << "<startstate>" << temp2->name << "</startstate>\n";
+	}
+	else
+	{
+		file << "<startstate>" << "</startstate>\n";
+	}
+	State* temp3 = stateSet;
+	if (stateSet != NULL)
+	{
+		file << "<acceptstates>\n";
+		while (temp3 != NULL)
+		{
+			if (temp3->accept == true)
+			{
+				file << "\t<state>" << temp3->name << "</state>\n";
+			}
+			temp3 = temp3->next;
+		}
+		file << "</acceptstates>\n";
+	}
+	else
+	{
+		file << "<acceptstates>\n";
+		file << "</acceptstates>\n";
+	}
+	file << "</automaton>\n";
+
+}
