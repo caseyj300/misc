@@ -16,7 +16,7 @@ void Automaton::menu()
 	string s;
 	string e;
 	char t;
-	char* n = "";
+	char* n;
 	string accept;
 	
 	// Print menu first time
@@ -115,18 +115,23 @@ void Automaton::menu()
 		}
 	case 9:
 		{
-			/*cout << "Enter the name of XML file: ";
+			cout << "Enter the name of XML file: ";
 			cin >> x;
 			cout << "Trying to load from " << x << endl;
-			strcat(n, x.c_str() );
+			n = new char[x.size() + 1];
+			strcpy(n, x.c_str() );
 			cout << "Begin attempt. " << endl;
-			loadAutomaton(n);*/
-			cout << "Not currently implemented" << endl;
+			cout << n << endl;
+			loadAutomaton(n);
+			delete[] n;
+			//cout << "Not currently implemented" << endl;
 			break;
 		}
 	case 10:
 		{
-			cout << "Saving...IS NOT CURRENTLY IMPLEMENTED"<<endl;
+			cout << "Saving..." << endl;
+			saveAutomaton();
+			//cout << "Saving...IS NOT CURRENTLY IMPLEMENTED"<<endl;
 			break;
 		}
 	case 11:

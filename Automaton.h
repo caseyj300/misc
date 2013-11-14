@@ -8,6 +8,7 @@
 #include <string>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 
 using namespace std;
 
@@ -44,11 +45,12 @@ public:
 	void getInput();
 	
 	void loadAutomaton(char* filename);
+	
+	void saveAutomaton();
 
 	/*
 	bool evalInput(string);
 	bool checkAutomaton();
-	void saveAutomaton();
 	void deleteAutomaton();
 	*/
 

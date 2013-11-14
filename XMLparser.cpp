@@ -32,7 +32,7 @@ bool XMLparser( char* filename, Automaton* jiffy ) {
 		strcpy( cline, line.c_str() );
 		// if line is not empty. check for recognized tags.
 		if( strcmp(cline, "") != 0 ) {
-			token = strtok(cline, " >");
+			token = strtok(cline, " \t>");
 			while( token ) {
 				// check if token is the desired tag
 				if( desTag == tagCheck(token) || desTag == 10 ) {
@@ -126,11 +126,11 @@ bool alphSetParse( ) {
 	int desTag = 7; // desired tag is <char>
 	int step = 1; // 1 = want <char>, 2 = want symbol, 3 = want </char>
 	char symbol;
-	//cout << "parse the alphaset" << endl;
+	cout << "parse the alphaset" << endl;
 	// Expects <char> [character] </char> format until </alphaset> encountered
 
 	// If there are still tokens left to be extracted from cline. Process them
-	token = strtok(NULL, " >");
+	token = strtok(NULL, " \t>");
 	while( token ) {
 		if( -2 == tagCheck(token) ) { // </alphaset> tag
 			if( desTag == 7 ) // not in middle of creating another alphabet node
@@ -144,6 +144,7 @@ bool alphSetParse( ) {
 				case 2: cout << "a single symbol." << endl; break;
 				case 3: cout << "</char> tag." << endl; break;
 			}
+			cout << "Current token is '" << token << "'" << endl;
 			return false;
 		}
 
@@ -174,7 +175,7 @@ bool alphSetParse( ) {
 			step = 1; desTag = 7;
 		}
 
-		token = strtok(NULL, " >");
+		token = strtok(NULL, " \t>");
 	} // end of tokens from old cline
 
 	// If there are no more tokens to grab from old cline or you process cline
@@ -184,7 +185,7 @@ bool alphSetParse( ) {
 		strcpy( cline, line.c_str() );
 		// If line is not empty, check for desired tag.
 		if( strcmp(cline, "") != 0 ) {
-			token = strtok(cline, " >");
+			token = strtok(cline, " \t>");
 			while( token ) {
 				if( -2 == tagCheck(token) ) { // </alphaset> tag
 					if( desTag == 7 ) // not in middle of creating another alphabet node
@@ -198,6 +199,7 @@ bool alphSetParse( ) {
 						case 2: cout << "a single symbol." << endl; break;
 						case 3: cout << "</char> tag." << endl; break;
 					}
+					cout << "Current token is '" << token << "'" << endl;
 					return false;
 				}
 
@@ -228,7 +230,7 @@ bool alphSetParse( ) {
 					step = 1; desTag = 7;
 				}
 
-				token = strtok(NULL, " >");
+				token = strtok(NULL, " \t>");
 			} // end of tokens from cline
 		}
 	} // end of file reached
@@ -247,7 +249,7 @@ bool stateSetParse( ) {
 	// Expects <state> [name] </state> format until </stateset> encountered
 
 	// If there are still tokens left to be extracted from cline. Process them
-	token = strtok(NULL, " >");
+	token = strtok(NULL, " \t>");
 	while( token ) {
 		if( -3 == tagCheck(token) ) { // </stateset> tag
 			if( desTag == 8 ) // not in middle of creating another state node
@@ -294,7 +296,7 @@ bool stateSetParse( ) {
 			step = 1; desTag = 8;
 		}
 
-		token = strtok(NULL, " >");
+		token = strtok(NULL, " \t>");
 	} // end of tokens from old cline
 
 	// If there are no more tokens to grab from old cline or you process cline
@@ -304,7 +306,7 @@ bool stateSetParse( ) {
 		strcpy( cline, line.c_str() );
 		// If line is not empty, check for desired tag.
 		if( strcmp(cline, "") != 0 ) {
-			token = strtok(cline, " >");
+			token = strtok(cline, " \t>");
 			while( token ) {
 				if( -3 == tagCheck(token) ) { // </stateset> tag
 					if( desTag == 8 ) // not in middle of creating another state node
@@ -351,7 +353,7 @@ bool stateSetParse( ) {
 					step = 1; desTag = 8;
 				}
 				
-				token = strtok(NULL, " >");
+				token = strtok(NULL, " \t>");
 			} // end of tokens in cline
 		}
 	} // reached end of file
@@ -372,7 +374,7 @@ bool transSetParse( ) {
 	//cout << "parse the transition set" << endl;
 
 	// If there are still tokens left to be extracted from cline, process them.
-	token = strtok(NULL, " >");
+	token = strtok(NULL, " \t>");
 	while( token ) {
 		if( -4 == tagCheck(token) ) { // </transset> tag
 			if( desTag == 1 ) // not in middle of creating transition
@@ -485,7 +487,7 @@ bool transSetParse( ) {
 				step = 1; desTag = 9;
 				break;
 		}
-		token = strtok(NULL, " >");
+		token = strtok(NULL, " \t>");
 	} // end of left over tokens in cline
 
 	// If there are no more tokens to grab from old cline or you processed cline
@@ -496,7 +498,7 @@ bool transSetParse( ) {
 
 		// If line is not empty, check for desired tag
 		if( strcmp( cline, "") != 0 ) {
-			token = strtok(cline, " >");
+			token = strtok(cline, " \t>");
 			while( token ) {
 				if( -4 == tagCheck(token) ) { // </transset> tag
 					if( desTag == 9 ) // not in middle of creating transition
@@ -609,7 +611,7 @@ bool transSetParse( ) {
 						step = 1; desTag = 9;
 						break;
 				}
-				token = strtok(NULL, " >");
+				token = strtok(NULL, " \t>");
 			} // end of tokens in cline
 		}
 	} // end of file reached
@@ -627,7 +629,7 @@ bool sStateParse( ) {
 	// Expects single itteration of <state> [name] </state> format before </startstate> encountered
 	
 	// If there are still tokens left to be extracted from cline, process cline.
-	token = strtok(NULL, " >");
+	token = strtok(NULL, " \t>");
 	while( token ) {
 		if( desTag != tagCheck(token) ) {
 			cout << "ERROR: Designating Starting State. Was expecting ";
@@ -665,7 +667,7 @@ bool sStateParse( ) {
 				break;
 		}
 		
-		token = strtok(NULL, " >");
+		token = strtok(NULL, " \t>");
 	} // end of tokens from old cline
 
 	// If there are no more tokens to grab from old cline or cline was processed
@@ -676,7 +678,7 @@ bool sStateParse( ) {
 		strcpy( cline, line.c_str() );
 		// If line is not empty, check for desired tag.
 		if( strcmp(cline, "") != 0 ) {
-			token = strtok(cline, " >");
+			token = strtok(cline, " \t>");
 			while( token ) {
 				if( desTag != tagCheck(token) ) {
 				cout << "ERROR: Designating Starting State. Was expecting ";
@@ -714,7 +716,7 @@ bool sStateParse( ) {
 					break;
 			}
 			
-			token = strtok(NULL, " >");
+			token = strtok(NULL, " \t>");
 			} // end of tokens from cline
 		}
 	} // end of file reached
@@ -733,7 +735,7 @@ bool accStateParse( ) {
 	// Expects <state> [name] </state> format until </acceptstates> is encountered
 
 	// If there are still tokens left to be extracted from cline, process cline
-	token = strtok(NULL, " >");
+	token = strtok(NULL, " \t>");
 	while( token ) {
 		if( -6 == tagCheck(token) ) { // </acceptstates> tag
 			if( desTag == 8 ) // not in middle of designating accepting state
@@ -779,7 +781,7 @@ bool accStateParse( ) {
 				step = 1; desTag = 8;
 				break;
 		}
-		token = strtok(NULL, " >");
+		token = strtok(NULL, " \t>");
 	} // end of tokens from old cline
 
 	// If there are no more tokens to grab from old cline or cline was processed
@@ -789,7 +791,7 @@ bool accStateParse( ) {
 		strcpy( cline, line.c_str() );
 		// If line is not empty, check for desired tag.
 		if( strcmp(cline, "") != 0 ) {
-			token = strtok(cline, " >");
+			token = strtok(cline, " \t>");
 			while( token ) {
 				if( -6 == tagCheck(token) ) { // </acceptstates> tag
 					if( desTag == 8 ) // not in middle of designating accepting state
@@ -834,7 +836,7 @@ bool accStateParse( ) {
 						step = 1; desTag = 8;
 						break;
 				}
-				token = strtok(NULL, " >");
+				token = strtok(NULL, " \t>");
 			} // end of tokens from cline
 		}
 	} // end of file reached
